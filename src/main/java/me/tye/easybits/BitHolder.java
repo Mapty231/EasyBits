@@ -520,6 +520,7 @@ private void setSize(int newSize) throws IllegalArgumentException {
   }
 
   bitSet.set(newSize, size()+1, false); // Resets all out of bounds bits to false.
+  this.size = newSize;
 }
 
 /**
