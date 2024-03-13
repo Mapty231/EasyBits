@@ -32,4 +32,18 @@ public void ByteArray() {
   bits.add(new byte[]{80, -120, -8});
   Assertions.assertArrayEquals(new byte[]{80, -120, -8}, bits.getByteArray(0, 3));
 }
+
+@Test
+public void bitsEmpty() {
+  BitHolder bits = new BitHolder(4);
+  bits.add(new boolean[0]);
+  Assertions.assertEquals(new BitHolder(4), bits);
+}
+
+@Test
+public void byteEmpty() {
+  BitHolder bits = new BitHolder(16);
+  bits.add(new byte[0]);
+  Assertions.assertEquals(new BitHolder(16), bits);
+}
 }
