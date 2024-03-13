@@ -140,6 +140,8 @@ public void set(int index, boolean bit) throws IndexOutOfBoundsException {
  @param bits  The given bit values.
  @throws IndexOutOfBoundsException If the given index is negative or if the given index is bigger than the highest index. */
 public void set(int index, boolean[] bits) throws IndexOutOfBoundsException {
+  if (bits.length == 0) return; // Handles edge condition
+
   isInBounds(index);
   isInBounds(index + bits.length-1);
 
