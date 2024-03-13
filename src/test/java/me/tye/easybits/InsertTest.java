@@ -48,5 +48,11 @@ public void insertMultiEnd() {
   Assertions.assertEquals(BitHolder.fromBitString("111100100001"), bits);
 }
 
+@Test
+public void insertEmpty() {
+  BitHolder bits = new BitHolder(4);
+  bits.insert(0, new boolean[0]);
+  Assertions.assertEquals(new BitHolder(4), bits);
+}
 
 }
