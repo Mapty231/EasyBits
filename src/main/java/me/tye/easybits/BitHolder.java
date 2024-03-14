@@ -599,61 +599,17 @@ public @NotNull String toString() {
  @return A hex string that represents the bits stored in this holder. */
 public @NotNull String toHexString() {
   StringBuilder hexString = new StringBuilder();
-  byte[] byteValues = toByteArray();
+  int bitsToPad = size() % 4;
+  setSize(size() + bitsToPad);
 
-  for (byte byte_ : byteValues) {
-    int higherValue = byte_ >> 4; // same as divide by 16
-    int lowerValue = byte_ & 0b1111; // gets the remainder from the divide by 16
+  for (int i = 0; i < size() - 3; i += 4) {
+    if (i % 8 == 0) hexString.append(' '); // Appends a space after every byte.
 
-    hexString.append(nibbleToHex(higherValue))
-             .append(nibbleToHex(lowerValue))
-             .append(' ');
+    boolean[] nibble = get(i, i + 3);
+    hexString.append(Hex.nibbleToHex(nibble));
   }
 
-  return hexString.toString();
-}
-
-/**
- @param nibble A numeric value between 0 & 15 (inclusive).
- @return The hex character that represent the given value.
- @throws IllegalArgumentException If the given value is bellow 0 or above 15. */
-private char nibbleToHex(int nibble) throws IllegalArgumentException {
-  switch (nibble) {
-  case 0:
-    return '0';
-  case 1:
-    return '1';
-  case 2:
-    return '2';
-  case 3:
-    return '3';
-  case 4:
-    return '4';
-  case 5:
-    return '5';
-  case 6:
-    return '6';
-  case 7:
-    return '7';
-  case 8:
-    return '8';
-  case 9:
-    return '9';
-  case 10:
-    return 'A';
-  case 11:
-    return 'B';
-  case 12:
-    return 'C';
-  case 13:
-    return 'D';
-  case 14:
-    return 'E';
-  case 15:
-    return 'F';
-  default:
-    throw new IllegalArgumentException(expectedNibbleValue(nibble));
-  }
+  return hexString.toString().trim();
 }
 
 /**
