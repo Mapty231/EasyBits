@@ -62,7 +62,7 @@ public BitHolder(boolean[] bits) {
  @param toClone   The instance of BitHolder to return a clone of.
  @param deepClone True if the given instance should de cloned deeply, false if the given instance should be cloned shallowly.
  @throws NullPointerException If toClone is null. */
-@SuppressWarnings ("RedundantIfStatement") // Makes sure the clone is created using pass by value.
+@SuppressWarnings ("RedundantIfStatement")// Makes sure the clone is created using pass by value.
 public BitHolder(@NotNull BitHolder toClone, boolean deepClone) throws NullPointerException {
   nullCheck(toClone);
 
@@ -70,13 +70,14 @@ public BitHolder(@NotNull BitHolder toClone, boolean deepClone) throws NullPoint
 
     this.bitSet = new BitSet();
     for (boolean bit : toClone) {
-      if (bit) add(true);
-      else add(false);
+      if (bit) {add(true);}
+      else {add(false);}
     }
 
     this.setSize(toClone.size());
 
-  } else { // Shallow clone
+  }
+  else { // Shallow clone
 
     this.bitSet = toClone.bitSet;
     this.size = toClone.size;
@@ -142,7 +143,7 @@ public void set(int index, boolean[] bits) throws IndexOutOfBoundsException {
   if (bits.length == 0) return; // Handles edge condition
 
   isInBounds(index);
-  isInBounds(index + bits.length-1);
+  isInBounds(index + bits.length - 1);
 
   for (int i = 0; i < bits.length; i++) {
     bitSet.set(index + i, bits[i]);
@@ -161,7 +162,7 @@ public void set(int index, @NotNull BitHolder bits) throws NullPointerException,
   isInBounds(index + bits.highestIndex());
 
   for (int i = 0; i < bits.size(); i++) {
-    this.set(index+i, bits.get(i));
+    this.set(index + i, bits.get(i));
   }
 }
 
@@ -209,9 +210,9 @@ public @NotNull BitHolder remove(int startIndex, int endIndex) throws IllegalArg
   }
 
   BitHolder removedBits = subBits(startIndex, endIndex);
-  boolean[] subsequentBits = get(endIndex+1, highestIndex());
+  boolean[] subsequentBits = get(endIndex + 1, highestIndex());
   set(startIndex, subsequentBits);
-  setSize(startIndex+subsequentBits.length);
+  setSize(startIndex + subsequentBits.length);
 
   return removedBits;
 }
@@ -286,7 +287,7 @@ public void insert(int index, BitHolder bits) throws IndexOutOfBoundsException {
  @return A modified BitHolder with the bits shifted by the given amount.
  @throws IllegalArgumentException If the given amount is negative. */
 public @NotNull BitHolder shiftLeft(int amount) throws IllegalArgumentException {
-  if (amount < 0) throw new IllegalArgumentException(amountBellowZero(amount));
+  if (amount < 0) {throw new IllegalArgumentException(amountBellowZero(amount));}
 
   BitHolder bitHolderClone = new BitHolder(this, true);
 
@@ -299,7 +300,7 @@ public @NotNull BitHolder shiftLeft(int amount) throws IllegalArgumentException 
     return bitHolderClone;
   }
 
-  bitHolderClone.remove(0, amount-1);
+  bitHolderClone.remove(0, amount - 1);
   bitHolderClone.add(new boolean[amount]);
   return bitHolderClone;
 }
@@ -312,7 +313,7 @@ public @NotNull BitHolder shiftLeft(int amount) throws IllegalArgumentException 
  @return A modified BitHolder with the bits shifted by the given amount.
  @throws IllegalArgumentException If the given amount is negative. */
 public @NotNull BitHolder shiftRight(int amount) throws IllegalArgumentException {
-  if (amount < 0) throw new IllegalArgumentException(amountBellowZero(amount));
+  if (amount < 0) {throw new IllegalArgumentException(amountBellowZero(amount));}
 
   BitHolder bitHolderClone = new BitHolder(this, true);
 
@@ -358,7 +359,7 @@ public boolean areAllLow() {
   // This method can't check the cardinality of the bitSet as bits that exist above of the tracked "size"
   // in the set could interfere with the result of that method.
   for (boolean bit : this) {
-    if (bit) return false;
+    if (bit) {return false;}
   }
 
   return true;
@@ -394,7 +395,9 @@ public @NotNull BitHolder subBits(int startIndex, int endIndex) throws IllegalAr
  Performs the NOT logic operation on this BitHolder.
  @return A new BitHolder containing the result of the NOT logic operation on the calling BitHolder. */
 public @NotNull BitHolder NOT() {
-  if (size() == 0) return new BitHolder(); // Handles edge case of a logic operation on an empty BitHolder.
+  if (size() == 0) {
+    return new BitHolder(); // Handles edge case of a logic operation on an empty BitHolder.
+  }
 
   BitHolder clone = new BitHolder(this, true);
   clone.bitSet.flip(0, size());
@@ -408,7 +411,9 @@ public @NotNull BitHolder NOT() {
  @throws NullPointerException If the given BitHolder was null. */
 public @NotNull BitHolder AND(@NotNull BitHolder bitsToAND) throws NullPointerException {
   nullCheck(bitsToAND);
-  if (size() == 0) return new BitHolder(); // Handles edge case of a logic operation on an empty BitHolder.
+  if (size() == 0) {
+    return new BitHolder(); // Handles edge case of a logic operation on an empty BitHolder.
+  }
 
   bitsToAND.setSize(this.size()); // Ensures that the bitHolders are the same size for consistency.
 
@@ -424,7 +429,9 @@ public @NotNull BitHolder AND(@NotNull BitHolder bitsToAND) throws NullPointerEx
  @throws NullPointerException If the given BitHolder was null. */
 public @NotNull BitHolder NAND(@NotNull BitHolder bitsToNAND) throws NullPointerException {
   nullCheck(bitsToNAND);
-  if (size() == 0) return new BitHolder(); // Handles edge case of a logic operation on an empty BitHolder.
+  if (size() == 0) {
+    return new BitHolder(); // Handles edge case of a logic operation on an empty BitHolder.
+  }
 
   bitsToNAND.setSize(this.size()); // Ensures that the bitHolders are the same size for consistency.
 
@@ -440,7 +447,9 @@ public @NotNull BitHolder NAND(@NotNull BitHolder bitsToNAND) throws NullPointer
  @throws NullPointerException If the given BitHolder was null. */
 public @NotNull BitHolder OR(@NotNull BitHolder bitsToOR) throws NullPointerException {
   nullCheck(bitsToOR);
-  if (size() == 0) return new BitHolder(); // Handles edge case of a logic operation on an empty BitHolder.
+  if (size() == 0) {
+    return new BitHolder(); // Handles edge case of a logic operation on an empty BitHolder.
+  }
 
   bitsToOR.setSize(this.size()); // Ensures that the bitHolders are the same size for consistency.
 
@@ -456,7 +465,9 @@ public @NotNull BitHolder OR(@NotNull BitHolder bitsToOR) throws NullPointerExce
  @throws NullPointerException If the given BitHolder was null. */
 public @NotNull BitHolder NOR(@NotNull BitHolder bitsToNOR) throws NullPointerException {
   nullCheck(bitsToNOR);
-  if (size() == 0) return new BitHolder(); // Handles edge case of a logic operation on an empty BitHolder.
+  if (size() == 0) {
+    return new BitHolder(); // Handles edge case of a logic operation on an empty BitHolder.
+  }
 
   bitsToNOR.setSize(this.size()); // Ensures that the bitHolders are the same size for consistency.
 
@@ -472,7 +483,9 @@ public @NotNull BitHolder NOR(@NotNull BitHolder bitsToNOR) throws NullPointerEx
  @throws NullPointerException If the given BitHolder was null. */
 public @NotNull BitHolder XOR(@NotNull BitHolder bitsToXOR) throws NullPointerException {
   nullCheck(bitsToXOR);
-  if (size() == 0) return new BitHolder(); // Handles edge case of a logic operation on an empty BitHolder.
+  if (size() == 0) {
+    return new BitHolder(); // Handles edge case of a logic operation on an empty BitHolder.
+  }
 
   bitsToXOR.setSize(this.size()); // Ensures that the bitHolders are the same size for consistency.
 
@@ -488,7 +501,9 @@ public @NotNull BitHolder XOR(@NotNull BitHolder bitsToXOR) throws NullPointerEx
  @throws NullPointerException If the given BitHolder was null. */
 public @NotNull BitHolder XNOR(@NotNull BitHolder bitsToXNOR) throws NullPointerException {
   nullCheck(bitsToXNOR);
-  if (size() == 0) return new BitHolder(); // Handles edge case of a logic operation on an empty BitHolder.
+  if (size() == 0) {
+    return new BitHolder(); // Handles edge case of a logic operation on an empty BitHolder.
+  }
 
   bitsToXNOR.setSize(this.size()); // Ensures that the bitHolders are the same size for consistency.
 
@@ -511,14 +526,14 @@ public int size() {
  @param newSize The new size of the BitHolder. This value must be 0 or above.
  @throws IllegalArgumentException If the given size was negative. */
 private void setSize(int newSize) throws IllegalArgumentException {
-  if (newSize < 0) throw new IllegalArgumentException(amountBellowZero(newSize));
+  if (newSize < 0) {throw new IllegalArgumentException(amountBellowZero(newSize));}
 
   if (newSize > size()) {
     this.size = newSize;
     return;
   }
 
-  bitSet.set(newSize, size()+1, false); // Resets all out of bounds bits to false.
+  bitSet.set(newSize, size() + 1, false); // Resets all out of bounds bits to false.
   this.size = newSize;
 }
 
@@ -536,7 +551,7 @@ public int highestIndex() {
  @param newHighestIndex The new highestIndex of the BitHolder. This value must be 0 or above.
  @throws IllegalArgumentException If the given index was negative. */
 public void setHighestIndex(int newHighestIndex) {
-  setSize(newHighestIndex+1);
+  setSize(newHighestIndex + 1);
 }
 
 /**
@@ -566,12 +581,13 @@ public @NotNull String toString() {
   for (int i = 0; i < size(); i++) {
     boolean bit = get(i);
 
-    if (i % 8 == 0)  bitString.append(' ');
+    if (i % 8 == 0) {bitString.append(' ');}
 
     // formats it into 1s & 0s
     if (bit) {
       bitString.append('1');
-    } else {
+    }
+    else {
       bitString.append('0');
     }
   }
@@ -580,8 +596,7 @@ public @NotNull String toString() {
 }
 
 /**
- * @return A hex string that represents the bits stored in this holder.
- */
+ @return A hex string that represents the bits stored in this holder. */
 public @NotNull String toHexString() {
   StringBuilder hexString = new StringBuilder();
   byte[] byteValues = toByteArray();
@@ -599,29 +614,45 @@ public @NotNull String toHexString() {
 }
 
 /**
- * @param nibble A numeric value between 0 & 15 (inclusive).
- * @return The hex character that represent the given value.
- * @throws IllegalArgumentException If the given value is bellow 0 or above 15.
- */
+ @param nibble A numeric value between 0 & 15 (inclusive).
+ @return The hex character that represent the given value.
+ @throws IllegalArgumentException If the given value is bellow 0 or above 15. */
 private char nibbleToHex(int nibble) throws IllegalArgumentException {
   switch (nibble) {
-  case 0: return '0';
-  case 1: return '1';
-  case 2: return '2';
-  case 3: return '3';
-  case 4: return '4';
-  case 5: return '5';
-  case 6: return '6';
-  case 7: return '7';
-  case 8: return '8';
-  case 9: return '9';
-  case 10: return 'A';
-  case 11: return 'B';
-  case 12: return 'C';
-  case 13: return 'D';
-  case 14: return 'E';
-  case 15: return 'F';
-  default: throw new IllegalArgumentException(expectedNibbleValue(nibble));
+  case 0:
+    return '0';
+  case 1:
+    return '1';
+  case 2:
+    return '2';
+  case 3:
+    return '3';
+  case 4:
+    return '4';
+  case 5:
+    return '5';
+  case 6:
+    return '6';
+  case 7:
+    return '7';
+  case 8:
+    return '8';
+  case 9:
+    return '9';
+  case 10:
+    return 'A';
+  case 11:
+    return 'B';
+  case 12:
+    return 'C';
+  case 13:
+    return 'D';
+  case 14:
+    return 'E';
+  case 15:
+    return 'F';
+  default:
+    throw new IllegalArgumentException(expectedNibbleValue(nibble));
   }
 }
 
@@ -629,11 +660,10 @@ private char nibbleToHex(int nibble) throws IllegalArgumentException {
  Creates a new BitHolder from the given string of bits.<br>
  The given string should only contain "1"'s or "0"'s. However, tabs, spaces, & line breaks are allowed. Any other characters will throw the IllegalArgumentException<br>
  To get a bit string from a BitHolder in this format use {@link #toString()}.<br>
- * @param bitString The string to parse into the BitHolder.
- * @return The BitHolder parsed from the given string of bits.
- * @throws IllegalArgumentException If the given string contained a character that wasn't "1", "0", tab, space, or a line break.
- * @throws NullPointerException If the given bitString was null.
- */
+ @param bitString The string to parse into the BitHolder.
+ @return The BitHolder parsed from the given string of bits.
+ @throws IllegalArgumentException If the given string contained a character that wasn't "1", "0", tab, space, or a line break.
+ @throws NullPointerException     If the given bitString was null. */
 public static @NotNull BitHolder fromBitString(@NotNull String bitString) throws IllegalArgumentException, NullPointerException {
   nullCheck(bitString);
 
@@ -646,14 +676,24 @@ public static @NotNull BitHolder fromBitString(@NotNull String bitString) throws
     case ' ':
     case '\t':
     case '\r':
-    case '\n': continue;
+    case '\n': {
+      continue;
+    }
 
     // Converts the chars to boolean values.
-    case '0': bits.add(false); continue;
-    case '1': bits.add(true); continue;
+    case '0': {
+      bits.add(false);
+      continue;
+    }
+    case '1': {
+      bits.add(true);
+      continue;
+    }
 
     // Invalid chars will case an exception.
-    default: throw new IllegalArgumentException(containedInvalidChars(bit));
+    default: {
+      throw new IllegalArgumentException(containedInvalidChars(bit));
+    }
     }
   }
 
@@ -669,7 +709,9 @@ public static @NotNull BitHolder fromBitString(@NotNull String bitString) throws
  @throws NullPointerException If any of the given BitHolders are null. */
 public @NotNull BitHolder concat(@NotNull BitHolder... holders) {
   nullCheck(holders);
-  for (BitHolder holder : holders) nullCheck(holder);
+  for (BitHolder holder : holders) {
+    nullCheck(holder);
+  }
 
   BitHolder holder = new BitHolder(this, true);
   holder.add(holder.toBoolArray());
@@ -689,15 +731,15 @@ public @NotNull BitHolder concat(@NotNull BitHolder... holders) {
  @param index The given index to check.
  @throws IndexOutOfBoundsException If the given index is negative or if the given index is bigger than the highest index. */
 private void isInBounds(int index) throws IndexOutOfBoundsException {
-  if (index < 0) throw new IndexOutOfBoundsException(amountBellowZero(index));
-  if (highestIndex() < index) throw new IndexOutOfBoundsException(amountLargerThanIndexed(highestIndex(), index));
+  if (index < 0) {throw new IndexOutOfBoundsException(amountBellowZero(index));}
+  if (highestIndex() < index) {throw new IndexOutOfBoundsException(amountLargerThanIndexed(highestIndex(), index));}
 }
 
 /**
  @throws NullPointerException If the given argument is null. */
 @Contract (value="null -> fail; !null -> _")
 private static void nullCheck(Object object) throws NullPointerException {
-  if (object == null) throw new NullPointerException(isNull());
+  if (object == null) {throw new NullPointerException(isNull());}
 }
 
 
@@ -745,14 +787,16 @@ public boolean[] toBoolArray() {
  @return A byte array that represents the bits contained by this BitHolder. */
 public byte[] toByteArray() {
   int byteSize = size() / 8;
-  if (size() % 8 != 0) byteSize++; // Rounds up the remainder.
+  if (size() % 8 != 0) {
+    byteSize++; // Rounds up the remainder.
+  }
 
   byte[] bytes = new byte[byteSize];
 
   for (int i = 0; i < highestIndex(); i++) {
     boolean bit = get(i);
 
-    if (!bit) continue;
+    if (!bit) {continue;}
 
     // Gets the byte that is being edited.
     int byteIndex = i / 8;
@@ -1197,7 +1241,7 @@ public void set(int index, double[] doubles) throws IndexOutOfBoundsException {
 public <T> T get(int index, @NotNull Class<T> primitiveClass) throws NullPointerException, IllegalArgumentException, IndexOutOfBoundsException {
   nullCheck(primitiveClass);
 
-  if (!isPrimitive(primitiveClass)) throw new IllegalArgumentException(notPrimitive(primitiveClass.getName()));
+  if (!isPrimitive(primitiveClass)) {throw new IllegalArgumentException(notPrimitive(primitiveClass.getName()));}
   isInBounds(index);
 
   int bitSize = fromClass(primitiveClass).getIndexSize();
@@ -1277,8 +1321,8 @@ public double getDouble(int index) throws IndexOutOfBoundsException {
 /**
  Gets a byte array from the BitHolder at the given index.<br>
  A byte has 8 bits.
- @param bitHolderIndex       The index to get the byte array at.
- @param arrayLength The length of the byte array to get.
+ @param bitHolderIndex The index to get the byte array at.
+ @param arrayLength    The length of the byte array to get.
  @return A byte array representing the bits at the given index.
  @throws IndexOutOfBoundsException If the given index is negative or if the given index summed with the bit length of the array is bigger than the highest index of the BitHolder. */
 public byte[] getByteArray(int bitHolderIndex, int arrayLength) throws IndexOutOfBoundsException {
@@ -1289,8 +1333,8 @@ public byte[] getByteArray(int bitHolderIndex, int arrayLength) throws IndexOutO
 /**
  Gets a short array from the BitHolder at the given index.<br>
  A short has 16 bits.
- @param bitHolderIndex       The index to get the short array at.
- @param arrayLength The length of the short array to get.
+ @param bitHolderIndex The index to get the short array at.
+ @param arrayLength    The length of the short array to get.
  @return A short array representing the bits at the given index.
  @throws IndexOutOfBoundsException If the given index is negative or if the given index summed with the bit length of the array is bigger than the highest index of the BitHolder. */
 public short[] getShortArray(int bitHolderIndex, int arrayLength) throws IndexOutOfBoundsException {
@@ -1301,8 +1345,8 @@ public short[] getShortArray(int bitHolderIndex, int arrayLength) throws IndexOu
 /**
  Gets a char array from the BitHolder at the given index.<br>
  A char has 16 bits.
- @param bitHolderIndex       The index to get the char array at.
- @param arrayLength The length of the char array to get.
+ @param bitHolderIndex The index to get the char array at.
+ @param arrayLength    The length of the char array to get.
  @return A char array representing the bits at the given index.
  @throws IndexOutOfBoundsException If the given index is negative or if the given index summed with the bit length of the array is bigger than the highest index of the BitHolder. */
 public char[] getCharArray(int bitHolderIndex, int arrayLength) throws IndexOutOfBoundsException {
@@ -1313,8 +1357,8 @@ public char[] getCharArray(int bitHolderIndex, int arrayLength) throws IndexOutO
 /**
  Gets a int array from the BitHolder at the given index.<br>
  A int has 32 bits.
- @param bitHolderIndex       The index to get the int array at.
- @param arrayLength The length of the int array to get.
+ @param bitHolderIndex The index to get the int array at.
+ @param arrayLength    The length of the int array to get.
  @return A int array representing the bits at the given index.
  @throws IndexOutOfBoundsException If the given index is negative or if the given index summed with the bit length of the array is bigger than the highest index of the BitHolder. */
 public int[] getIntArray(int bitHolderIndex, int arrayLength) throws IndexOutOfBoundsException {
@@ -1325,8 +1369,8 @@ public int[] getIntArray(int bitHolderIndex, int arrayLength) throws IndexOutOfB
 /**
  Gets a long array from the BitHolder at the given index.<br>
  A long has 64 bits.
- @param bitHolderIndex       The index to get the long array at.
- @param arrayLength The length of the long array to get.
+ @param bitHolderIndex The index to get the long array at.
+ @param arrayLength    The length of the long array to get.
  @return A long array representing the bits at the given index.
  @throws IndexOutOfBoundsException If the given index is negative or if the given index summed with the bit length of the array is bigger than the highest index of the BitHolder. */
 public long[] getLongArray(int bitHolderIndex, int arrayLength) throws IndexOutOfBoundsException {
@@ -1337,8 +1381,8 @@ public long[] getLongArray(int bitHolderIndex, int arrayLength) throws IndexOutO
 /**
  Gets a float array from the BitHolder at the given index.<br>
  A float has 32 bits.
- @param bitHolderIndex       The index to get the float array at.
- @param arrayLength The length of the float array to get.
+ @param bitHolderIndex The index to get the float array at.
+ @param arrayLength    The length of the float array to get.
  @return A float array representing the bits at the given index.
  @throws IndexOutOfBoundsException If the given index is negative or if the given index summed with the bit length of the array is bigger than the highest index of the BitHolder. */
 public float[] getFloatArray(int bitHolderIndex, int arrayLength) throws IndexOutOfBoundsException {
@@ -1349,8 +1393,8 @@ public float[] getFloatArray(int bitHolderIndex, int arrayLength) throws IndexOu
 /**
  Gets a double array from the BitHolder at the given index.<br>
  A double has 64 bits.
- @param bitHolderIndex       The index to get the double array at.
- @param arrayLength The length of the double array to get.
+ @param bitHolderIndex The index to get the double array at.
+ @param arrayLength    The length of the double array to get.
  @return A double array representing the bits at the given index.
  @throws IndexOutOfBoundsException If the given index is negative or if the given index summed with the bit length of the array is bigger than the highest index of the BitHolder. */
 public double[] getDoubleArray(int bitHolderIndex, int arrayLength) throws IndexOutOfBoundsException {
@@ -1363,8 +1407,8 @@ public double[] getDoubleArray(int bitHolderIndex, int arrayLength) throws Index
 
 @Override
 public boolean equals(@Nullable Object obj) {
-  if (this == obj) return true;
-  if (obj == null || getClass() != obj.getClass()) return false;
+  if (this == obj) {return true;}
+  if (obj == null || getClass() != obj.getClass()) {return false;}
 
   BitHolder bits = (BitHolder) obj;
   return this.size == bits.size && Objects.equals(this.toString(), bits.toString());

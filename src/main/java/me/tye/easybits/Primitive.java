@@ -53,10 +53,12 @@ public int getIndexSize() {
  @return The enum that represents the given primitive class or primitive array class.
  @throws IllegalArgumentException If the given class wasn't a primitive class or primitive array class. */
 public static @NotNull Primitive fromClass(@NotNull Class<?> clazz) throws IllegalArgumentException {
-  if (clazz.isArray()) clazz = clazz.getComponentType(); // Converts arrays to component types.
+  if (clazz.isArray()) {
+    clazz = clazz.getComponentType(); // Converts arrays to component types.
+  }
 
   for (Primitive value : Primitive.values()) {
-    if (value.primitiveClass.equals(clazz) || value.wrapperClass.equals(clazz)) return value;
+    if (value.primitiveClass.equals(clazz) || value.wrapperClass.equals(clazz)) {return value;}
   }
 
   throw new IllegalArgumentException(notPrimitive(clazz.getName()));
@@ -67,10 +69,12 @@ public static @NotNull Primitive fromClass(@NotNull Class<?> clazz) throws Illeg
  @param clazz The given class.
  @return True if the class represents a primitive class or primitive array class. */
 public static boolean isPrimitive(@NotNull Class<?> clazz) {
-  if (clazz.isArray() && clazz.getComponentType().isPrimitive()) return true;
-  if (!clazz.isArray() && clazz.isPrimitive()) return true;
+  if (clazz.isArray() && clazz.getComponentType().isPrimitive()) {return true;}
+  if (!clazz.isArray() && clazz.isPrimitive()) {return true;}
 
-  if (clazz.isArray()) clazz = clazz.getComponentType(); // Converts arrays to component types.
+  if (clazz.isArray()) {
+    clazz = clazz.getComponentType(); // Converts arrays to component types.
+  }
 
   // Checks for primitive wrappers.
   if (clazz.equals(Boolean.class) ||
@@ -81,7 +85,7 @@ public static boolean isPrimitive(@NotNull Class<?> clazz) {
       clazz.equals(Long.class) ||
       clazz.equals(Float.class) ||
       clazz.equals(Double.class)
-  ) return true;
+  ) {return true;}
 
   return false;
 }
@@ -95,7 +99,7 @@ public static @NotNull BitHolder toBitHolder(@NotNull Object primitive) throws I
   Class<?> primitiveClass = primitive.getClass();
 
   // Object must be a primitive or primitive array.
-  if (!isPrimitive(primitiveClass)) throw new IllegalArgumentException(notPrimitive(primitiveClass.getName()));
+  if (!isPrimitive(primitiveClass)) {throw new IllegalArgumentException(notPrimitive(primitiveClass.getName()));}
 
   // Converts any primitive into a primitive array.
   if (!primitiveClass.isArray()) {
@@ -168,7 +172,7 @@ public static @NotNull BitHolder toBitHolder(@NotNull Object primitive) throws I
       for (int i = 0; i < primitiveType.bitSize; i++) {
         // Shifts the int value so that the current bit being evaluated is in the least significant position.
         int shifted = (((int) primitiveInstance) << i);
-        shifted = (shifted >>> primitiveType.bitSize-1);
+        shifted = (shifted >>> primitiveType.bitSize - 1);
 
         int bitIndex = i + (primitiveArrayIndex * primitiveType.bitSize); // Offsets the inserted bits depending on the current array iteration.
         boolean bitValue = (shifted & 0x1) == 1; // Determines if the bit was high or low.
@@ -187,7 +191,7 @@ public static @NotNull BitHolder toBitHolder(@NotNull Object primitive) throws I
       for (int i = 0; i < primitiveType.bitSize; i++) {
         // Shifts the int value so that the current bit being evaluated is in the least significant position.
         long shifted = (((long) primitiveInstance) << i);
-        shifted = (shifted >>> primitiveType.bitSize-1);
+        shifted = (shifted >>> primitiveType.bitSize - 1);
 
         int bitIndex = i + (primitiveArrayIndex * primitiveType.bitSize); // Offsets the inserted bits depending on the current array iteration.
         boolean bitValue = (shifted & 0x1) == 1; // Determines if the bit was high or low.
@@ -213,12 +217,12 @@ public static @NotNull BitHolder toBitHolder(@NotNull Object primitive) throws I
  @param <T>            The primitive class the BitHolder will be returned as.
  @return The BitHolder as a primitive.
  @throws IllegalArgumentException If the given class isn't a primitive or primitive array. */
+@SuppressWarnings ("unchecked") // JVM warns about casts to T
 public static <T> @NotNull T toPrimitive(@NotNull BitHolder bits, @NotNull Class<T> primitiveClass) throws IllegalArgumentException {
   Primitive primitive = fromClass(primitiveClass);
 
   // Clazz must be a primitive or primitive array.
-  if (!isPrimitive(primitiveClass))
-    throw new IllegalArgumentException(notPrimitive(primitiveClass.getName()));
+  if (!isPrimitive(primitiveClass)) {throw new IllegalArgumentException(notPrimitive(primitiveClass.getName()));}
 
   // If there are fewer bits than make up the primitive add padding bits.
   if (bits.size() < primitive.bitSize) {
@@ -250,7 +254,8 @@ public static <T> @NotNull T toPrimitive(@NotNull BitHolder bits, @NotNull Class
   if (primitive == BOOLEAN) {
     if (primitiveClass.isArray()) {
       return (T) bits.toBoolArray();
-    } else {
+    }
+    else {
       return (T) (Boolean) bits.get(0);
     }
   }
@@ -262,28 +267,48 @@ public static <T> @NotNull T toPrimitive(@NotNull BitHolder bits, @NotNull Class
 
     // Puts the primitive value into the array.
     switch (primitive) {
-    case BYTE: Array.setByte(primitiveArray, i, (byte) primitiveAsLongBits); break;
-    case SHORT: Array.setShort(primitiveArray, i, (short) primitiveAsLongBits); break;
-    case CHAR: Array.setChar(primitiveArray, i, (char) primitiveAsLongBits); break;
-    case INT: Array.setInt(primitiveArray, i, (int) primitiveAsLongBits); break;
-    case FLOAT: Array.setFloat(primitiveArray, i, Float.intBitsToFloat((int) primitiveAsLongBits)); break;
-    case LONG: Array.setLong(primitiveArray, i, primitiveAsLongBits); break;
-    case DOUBLE: Array.setDouble(primitiveArray, i, Double.longBitsToDouble(primitiveAsLongBits)); break;
+    case BYTE: {
+      Array.setByte(primitiveArray, i, (byte) primitiveAsLongBits);
+      break;
+    }
+    case SHORT: {
+      Array.setShort(primitiveArray, i, (short) primitiveAsLongBits);
+      break;
+    }
+    case CHAR: {
+      Array.setChar(primitiveArray, i, (char) primitiveAsLongBits);
+      break;
+    }
+    case INT: {
+      Array.setInt(primitiveArray, i, (int) primitiveAsLongBits);
+      break;
+    }
+    case FLOAT: {
+      Array.setFloat(primitiveArray, i, Float.intBitsToFloat((int) primitiveAsLongBits));
+      break;
+    }
+    case LONG: {
+      Array.setLong(primitiveArray, i, primitiveAsLongBits);
+      break;
+    }
+    case DOUBLE: {
+      Array.setDouble(primitiveArray, i, Double.longBitsToDouble(primitiveAsLongBits));
+      break;
+    }
     }
 
   }
 
-  if (primitiveClass.isArray()) return (T) primitiveArray;
+  if (primitiveClass.isArray()) {return (T) primitiveArray;}
   return (T) Array.get(primitiveArray, 0);
 }
 
 /**
  Gets the bits from the primitive at index i within the array & stores them in a long.
- * @param bits The bits of the primitive.
- * @param i The index of the primitive within the array.
- * @param primitive The type of primitive that is being parsed.
- * @return The bits from the primitive at index i in a long.
- */
+ @param bits      The bits of the primitive.
+ @param i         The index of the primitive within the array.
+ @param primitive The type of primitive that is being parsed.
+ @return The bits from the primitive at index i in a long. */
 private static long getPrimitiveAsLongBits(@NotNull BitHolder bits, int i, @NotNull Primitive primitive) {
   // Gets the boolean array that represents the primitive bits
   int primitiveIndex = (i + 1) * primitive.bitSize;
@@ -296,7 +321,7 @@ private static long getPrimitiveAsLongBits(@NotNull BitHolder bits, int i, @NotN
   // Iterates over the high bits of the primitive.
   for (int primitiveBitIndex = 0; primitiveBitIndex < primitive.bitSize; primitiveBitIndex++) {
     boolean bit = primitiveBits[primitiveBitIndex];
-    if (!bit) continue;
+    if (!bit) {continue;}
 
     // "Adds" the primitive bit to the temporary var value at the correct offset.
     primitiveHolder = (primitiveHolder | 1L << (primitive.bitSize - primitiveBitIndex - 1));
