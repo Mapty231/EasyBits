@@ -614,8 +614,8 @@ public @NotNull String toHexString() {
 
 /**
  Creates a new BitHolder from the given string of bits.<br>
- The given string should only contain "1"'s or "0"'s. However, tabs, spaces, & line breaks are allowed. Any other characters will throw the IllegalArgumentException<br>
- To get a bit string from a BitHolder in this format use {@link #toString()}.<br>
+ The given string should only contain "1"'s or "0"'s. However, tabs, spaces, & line breaks are allowed. Any other characters will throw the IllegalArgumentException.<br>
+ To get a bit string from a BitHolder in this format use {@link #toString()}.
  @param bitString The string to parse into the BitHolder.
  @return The BitHolder parsed from the given string of bits.
  @throws IllegalArgumentException If the given string contained a character that wasn't "1", "0", tab, space, or a line break.
