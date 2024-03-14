@@ -648,7 +648,41 @@ public static @NotNull BitHolder fromBitString(@NotNull String bitString) throws
 
     // Invalid chars will case an exception.
     default: {
-      throw new IllegalArgumentException(containedInvalidChars(bit));
+      throw new IllegalArgumentException(containedInvalidBinaryChars(bit));
+    }
+    }
+  }
+
+  return bits;
+}
+
+/**
+ Creates a new BitHolder from the given string of hex characters.<br>
+ The given string should only contain valid hex characters (either upper or lower case).
+ However, tabs, spaces, & line breaks are allowed. Any other characters will throw the IllegalArgumentException.<br>
+ To get a bit string from a BitHolder in this format use {@link #toHexString()}.<br>
+ @param hexString The string to parse into the BitHolder
+ @return The BitHolder parsed from the given string of hex values.
+ @throws IllegalArgumentException If the given string contained a character that wasn't a hex character, tab, space, or a line break.
+ @throws NullPointerException     If the given hex string was null. */
+public static @NotNull BitHolder fromHexString(@NotNull String hexString) throws IllegalArgumentException, NullPointerException {
+  nullCheck(hexString);
+
+  BitHolder bits = new BitHolder();
+  char[] charArray = hexString.toCharArray();
+
+  for (char hex : charArray) {
+    switch (hex) {
+    // Ignores whitespaces & returns.
+    case ' ':
+    case '\t':
+    case '\r':
+    case '\n': {
+      continue;
+    }
+
+    default: {
+      bits.add(Hex.hexToNibble(hex));
     }
     }
   }
