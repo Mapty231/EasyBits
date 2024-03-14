@@ -786,28 +786,31 @@ public boolean[] toBoolArray() {
 /**
  @return A byte array that represents the bits contained by this BitHolder. */
 public byte[] toByteArray() {
-  int byteSize = size() / 8;
-  if (size() % 8 != 0) {
-    byteSize++; // Rounds up the remainder.
-  }
+  // Pads the BitHolder
+  int amountOfBitsToPad = size() % BYTE.bitSize;
+  setSize(size() + amountOfBitsToPad);
 
+  int byteSize = size() / 8;
   byte[] bytes = new byte[byteSize];
 
-  for (int i = 0; i < highestIndex(); i++) {
-    boolean bit = get(i);
+  // Iterates over the bytes in the created array
+  for (int byteInArray = 0; byteInArray < byteSize; byteInArray++) {
+    byte byteBeingModified = 0;
 
-    if (!bit) {continue;}
+    // Iterates over the bits within a byte
+    for (int internalByteIndex = 0; internalByteIndex < 8; internalByteIndex++) {
+      // Finds the correlating bit in the BitHolder
+      boolean bit = get((byteInArray * 8) + internalByteIndex);
+      if (!bit) {continue;}
 
-    // Gets the byte that is being edited.
-    int byteIndex = i / 8;
-    byte byteToEdit = bytes[byteIndex];
+      byte bitToSet = (byte) (128 >> internalByteIndex); // Sets the bit in the correct position within the byte
+      byteBeingModified = (byte) (byteBeingModified | bitToSet); // "Adds" the bit to the byte
+    }
 
-    // "Adds" the bit into the existing byte.
-    byteToEdit = (byte) (byteToEdit | (byte) (1 << i));
-    bytes[byteIndex] = byteToEdit;
-
+    bytes[byteInArray] = byteBeingModified; //Sets the byte in the array to the correct value.
   }
 
+  setSize(size() - amountOfBitsToPad); // Removes the padding bits to keep this method pure.
   return bytes;
 }
 
